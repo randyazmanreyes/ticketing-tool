@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    @apply font-sans;
+    @apply text-gray-800;
+}
+
+@layer components {
+    .btn-primary {
+        @apply bg-teal-800 hover:bg-teal-600 active:bg-teal-400 disabled:opacity-60 disabled:pointer-events-none text-white px-4 py-2 rounded-md font-bold;
+    }
+
+    .form-input {
+        @apply border bg-gray-200 px-4 py-2 rounded-md outline-none disabled:opacity-60 disabled:pointer-events-none;
+    }
+
+    .ticket {
+        @apply w-full rounded-md border border-gray-200 bg-gray-100 p-2 mb-2 text-sm font-bold drop-shadow-md;
+    }
+
+    .ticket-list {
+        @apply rounded-md bg-gray-200 max-w-[16rem] min-w-[16rem] min-h-[24rem] p-2 m-2;
+    }
+}

@@ -1,0 +1,7 @@
+node_modules/
+
+# ignore files in folder dist/
+dist/*
+
+# but keep the folder
+!dist/.keep
