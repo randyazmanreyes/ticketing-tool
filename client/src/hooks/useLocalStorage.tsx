@@ -24,7 +24,14 @@ function useLocalStorage(key: string, initialValue?: any) {
             setStoredValue(valueToStore);
 
             if (typeof window !== 'undefined') {
-                window.localStorage.setItem(key, JSON.stringify(valueToStore));
+                if (valueToStore) {
+                    window.localStorage.setItem(
+                        key,
+                        JSON.stringify(valueToStore)
+                    );
+                } else {
+                    window.localStorage.removeItem(key);
+                }
             }
         } catch (error) {
             console.log(error);

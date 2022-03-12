@@ -18,6 +18,7 @@ export interface WithSessionProps {
     isLoggingIn: boolean;
     loginError?: LoginError;
     login(email: string, password: string): Promise<void>;
+    logout(): void;
 }
 
 const SessionContext = createContext<WithSessionProps | null>(null);
@@ -61,10 +62,15 @@ export const SessionProvider = ({ children }: Props): JSX.Element => {
         }
     };
 
+    const logout = () => {
+        setUser(undefined);
+        setSession({});
+    };
+
+    const value = { session, isLoggingIn, loginError, login, logout };
+
     return (
-        <SessionContext.Provider
-            value={{ session, isLoggingIn, loginError, login }}
-        >
+        <SessionContext.Provider value={value}>
             {children}
         </SessionContext.Provider>
     );
