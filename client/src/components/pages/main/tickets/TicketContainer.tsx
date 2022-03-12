@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import TicketStatus from '../../../../../../common/constants/TicketStatus';
 import withTickets, { WithTicketsProps } from '../../../../hoc/withTickets';
@@ -8,6 +8,7 @@ const TicketContainer = ({
     openTickets,
     inProgressTickets,
     completedTickets,
+    fetchTickets,
     reorderTickets,
     moveTicket,
 }: WithTicketsProps) => {
@@ -56,6 +57,10 @@ const TicketContainer = ({
             );
         }
     };
+
+    useEffect(() => {
+        fetchTickets();
+    }, []);
 
     return (
         <div className="flex justify-start sm:justify-center px-4">

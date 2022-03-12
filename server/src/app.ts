@@ -3,14 +3,16 @@ import Debug from 'debug';
 import logger from 'morgan';
 import compression from 'compression';
 import path from 'path';
-import LoginBody from '../../common/login-body';
+import LoginBody from '../../common/request/login-body';
 import delay from '../../common/utils/delay';
 import ticketService from './ticket-service';
-import ReorderTicketsBody from '../../common/reorder-tickets-body';
-import SuccessResponse from '../../common/success-response';
-import LoginResponse from '../../common/login-response';
-import ErrorResponse from '../../common/error-response';
-import MoveTicketBody from '../../common/move-ticket-body';
+import ReorderTicketsBody from '../../common/request/reorder-tickets-body';
+import SuccessResponse from '../../common/request/success-response';
+import LoginResponse from '../../common/request/login-response';
+import ErrorResponse from '../../common/request/error-response';
+import MoveTicketBody from '../../common/request/move-ticket-body';
+import CreateTicketResponse from '../../common/request/create-ticket-response';
+import CreateTicketBody from '../../common/request/create-ticket-body';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = Debug('ticketing-tool:app');
@@ -40,6 +42,19 @@ app.post(
                 message: 'Invalid email or password',
             });
         }
+    }
+);
+
+app.post(
+    '/tickets',
+    async (req: Request, res: Response<CreateTicketResponse>) => {
+        const { title, description } = <CreateTicketBody>req.body;
+
+        await delay(1000);
+
+        const ticket = ticketService.create(title, description);
+
+        res.status(201).send({ ticket });
     }
 );
 
@@ -77,7 +92,9 @@ app.post(
     }
 );
 
-app.get('/tickets', async (req: Request, res: Response) => {
+app.get('/tickets', async (_req: Request, res: Response) => {
+    await delay(1000);
+
     res.status(200).send({ tickets: ticketService.tickets });
 });
 

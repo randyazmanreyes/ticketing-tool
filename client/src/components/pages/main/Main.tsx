@@ -1,21 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import withSession, { WithSessionProps } from '../../../hoc/withSession';
 import { TicketsProvider } from '../../../hoc/withTickets';
+import CreateTicketModal from './modals/CreateTicketModal';
 import TicketContainer from './tickets/TicketContainer';
 
 const Main = ({ session, logout }: WithSessionProps): JSX.Element | null => {
     const navigate = useNavigate();
+    const [isShowCreateModal, setIsShowCreateModal] = useState(false);
+
+    const handleLogout = () => {
+        logout();
+    };
+
+    const handleCreateTicketClick = () => {
+        setIsShowCreateModal(!isShowCreateModal);
+    };
+
+    const handleCloseModal = () => {
+        setIsShowCreateModal(false);
+    };
 
     useEffect(() => {
         if (!session.user) {
             navigate('/login');
         }
     }, [session]);
-
-    const handleLogout = () => {
-        logout();
-    };
 
     if (!session.user) {
         return null;
@@ -25,7 +35,11 @@ const Main = ({ session, logout }: WithSessionProps): JSX.Element | null => {
         <TicketsProvider>
             <div className="inline-block sm:block p-4 pt-[4rem]">
                 <div className="top-bar">
-                    <button type="button" className="btn-primary">
+                    <button
+                        type="button"
+                        className="btn-primary"
+                        onClick={handleCreateTicketClick}
+                    >
                         CREATE TICKET
                     </button>
 
@@ -41,6 +55,11 @@ const Main = ({ session, logout }: WithSessionProps): JSX.Element | null => {
                 </div>
 
                 <TicketContainer />
+
+                <CreateTicketModal
+                    show={isShowCreateModal}
+                    onClose={handleCloseModal}
+                />
             </div>
         </TicketsProvider>
     );

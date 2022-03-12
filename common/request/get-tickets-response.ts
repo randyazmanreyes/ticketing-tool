@@ -1,4 +1,4 @@
-import Ticket from './data/ticket';
+import Ticket from '../data/ticket';
 
 export default interface GetTicketsResponse {
     tickets: Ticket[];

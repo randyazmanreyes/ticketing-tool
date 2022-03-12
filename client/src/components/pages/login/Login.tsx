@@ -61,7 +61,7 @@ const Login = ({
                             disabled={isLoggingIn}
                             required
                             placeholder="ENTER EMAIL"
-                            className="form-input w-full mt-8"
+                            className="form-input mt-8"
                             onChange={handleEmailChange}
                         />
 
@@ -71,7 +71,7 @@ const Login = ({
                             required
                             type="password"
                             placeholder="PASSWORD"
-                            className="form-input w-full mt-4"
+                            className="form-input mt-4"
                             onChange={handlePasswordChange}
                         />
 

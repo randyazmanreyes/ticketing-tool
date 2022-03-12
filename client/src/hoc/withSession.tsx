@@ -1,8 +1,8 @@
 import React, { ComponentType, createContext, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import LoginBody from '../../../common/login-body';
+import LoginBody from '../../../common/request/login-body';
 import LoginError from '../../../common/login-error';
-import LoginResponse from '../../../common/login-response';
+import LoginResponse from '../../../common/request/login-response';
 import useLocalStorage from '../hooks/useLocalStorage';
 
 interface Session {

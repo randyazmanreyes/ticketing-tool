@@ -1,16 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
-import React, {
-    ComponentType,
-    createContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { ComponentType, createContext, useState } from 'react';
 import TicketStatus from '../../../common/constants/TicketStatus';
 import Ticket from '../../../common/data/ticket';
-import GetTicketsResponse from '../../../common/get-tickets-response';
-import MoveTicketBody from '../../../common/move-ticket-body';
-import ReorderTicketsBody from '../../../common/reorder-tickets-body';
-import SuccessResponse from '../../../common/success-response';
+import CreateTicketBody from '../../../common/request/create-ticket-body';
+import CreateTicketResponse from '../../../common/request/create-ticket-response';
+import GetTicketsResponse from '../../../common/request/get-tickets-response';
+import MoveTicketBody from '../../../common/request/move-ticket-body';
+import ReorderTicketsBody from '../../../common/request/reorder-tickets-body';
+import SuccessResponse from '../../../common/request/success-response';
 
 interface Props {
     children: React.ReactNode;
@@ -21,6 +18,8 @@ export interface WithTicketsProps {
     openTickets: Ticket[];
     inProgressTickets: Ticket[];
     completedTickets: Ticket[];
+    fetchTickets(): Promise<void>;
+    createTicket(title: string, description: string): Promise<void>;
     reorderTickets(
         status: TicketStatus,
         startIndex: number,
@@ -95,6 +94,24 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
             default:
                 setOpenTickets(pTickets);
         }
+    };
+
+    const createTicket = async (title: string, description: string) => {
+        // NOTE:
+        // error is not handled here in purpose
+        // so that UI will handle it
+        const {
+            data: { ticket },
+        } = await axios.post<
+            CreateTicketResponse,
+            AxiosResponse<CreateTicketResponse, CreateTicketBody>,
+            CreateTicketBody
+        >('/tickets', {
+            title,
+            description,
+        });
+
+        console.log(`ticket ${ticket.id} created`);
     };
 
     const reorderTickets = async (
@@ -174,15 +191,13 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
         }
     };
 
-    useEffect(() => {
-        fetchTickets();
-    }, []);
-
     const value = {
         tickets,
         openTickets,
         inProgressTickets,
         completedTickets,
+        fetchTickets,
+        createTicket,
         reorderTickets,
         moveTicket,
     };
