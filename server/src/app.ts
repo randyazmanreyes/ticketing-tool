@@ -93,7 +93,7 @@ app.post(
 );
 
 app.get('/tickets', async (_req: Request, res: Response) => {
-    await delay(1000);
+    await delay(2000);
 
     res.status(200).send({ tickets: ticketService.tickets });
 });

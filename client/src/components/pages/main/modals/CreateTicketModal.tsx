@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import classNames from 'classnames';
 import Card from '../../../common/Card';
 import withTickets, { WithTicketsProps } from '../../../../hoc/withTickets';
+import CircularLoader from '../../../common/CircularLoader';
 
 interface Props extends WithTicketsProps {
     show?: boolean;
@@ -122,10 +123,7 @@ const CreateTicketModal = ({
                         className="btn-primary w-full mt-8"
                     >
                         {isCreating && (
-                            <div
-                                className="absolute w-6 h-6 rounded-full animate-spin
-                    border-4 border-solid border-lime-400 border-t-transparent"
-                            />
+                            <CircularLoader className="border-lime-400" />
                         )}
                         CREATE
                     </button>

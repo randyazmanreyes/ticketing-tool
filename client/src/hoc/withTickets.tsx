@@ -18,6 +18,7 @@ export interface WithTicketsProps {
     openTickets: Ticket[];
     inProgressTickets: Ticket[];
     completedTickets: Ticket[];
+    isFetchingTickets: boolean;
     fetchTickets(): Promise<void>;
     createTicket(title: string, description: string): Promise<void>;
     reorderTickets(
@@ -46,8 +47,11 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
     const [openTickets, setOpenTickets] = useState<Ticket[]>([]);
     const [inProgressTickets, setInProgressTickets] = useState<Ticket[]>([]);
     const [completedTickets, setCompletedTickets] = useState<Ticket[]>([]);
+    const [isFetchingTickets, setIsFetchingTickets] = useState(false);
 
     const fetchTickets = async () => {
+        setIsFetchingTickets(true);
+
         const {
             data: { tickets: allTickets },
         } = await axios.get<GetTicketsResponse>('/tickets');
@@ -66,6 +70,8 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
                 (ticket) => ticket.status === TicketStatus.Completed
             )
         );
+
+        setIsFetchingTickets(false);
     };
 
     const getTicketsByStatus = (status: TicketStatus) => {
@@ -196,6 +202,7 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
         openTickets,
         inProgressTickets,
         completedTickets,
+        isFetchingTickets,
         fetchTickets,
         createTicket,
         reorderTickets,

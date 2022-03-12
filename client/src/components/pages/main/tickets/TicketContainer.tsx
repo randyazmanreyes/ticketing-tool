@@ -8,6 +8,7 @@ const TicketContainer = ({
     openTickets,
     inProgressTickets,
     completedTickets,
+    isFetchingTickets,
     fetchTickets,
     reorderTickets,
     moveTicket,
@@ -72,6 +73,7 @@ const TicketContainer = ({
                     tickets={openTickets}
                     status={TicketStatus.Open}
                     isDropDisabled={isOpenDropDisabled}
+                    isLoading={isFetchingTickets}
                     title="OPEN"
                 />
 
@@ -79,6 +81,7 @@ const TicketContainer = ({
                     tickets={inProgressTickets}
                     status={TicketStatus.InProgress}
                     isDropDisabled={isInProgressDropDisabled}
+                    isLoading={isFetchingTickets}
                     title="IN PROGRESS"
                 />
 
@@ -86,6 +89,7 @@ const TicketContainer = ({
                     tickets={completedTickets}
                     status={TicketStatus.Completed}
                     isDropDisabled={isCompletedDropDisabled}
+                    isLoading={isFetchingTickets}
                     title="COMPLETED"
                 />
             </DragDropContext>
