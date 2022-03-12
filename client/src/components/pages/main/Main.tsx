@@ -19,10 +19,18 @@ const Main = ({ session }: WithSessionProps): JSX.Element | null => {
 
     return (
         <TicketsProvider>
-            <div className="inline-block sm:block p-4">
-                <button type="button" className="btn-primary mb-4">
-                    CREATE TICKET
-                </button>
+            <div className="inline-block sm:block p-4 pt-[4rem]">
+                <div className="top-bar">
+                    <button type="button" className="btn-primary">
+                        CREATE TICKET
+                    </button>
+
+                    <div className="grow" />
+
+                    <button type="button" className="btn-primary">
+                        LOG OUT
+                    </button>
+                </div>
 
                 <TicketContainer />
             </div>

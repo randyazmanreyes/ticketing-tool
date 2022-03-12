@@ -25,4 +25,8 @@ body {
     .ticket-list {
         @apply rounded-md bg-gray-200 max-w-[16rem] min-w-[16rem] min-h-[24rem] p-2 m-2;
     }
+    
+    .top-bar {
+        @apply flex items-center absolute top-0 left-0 w-full max-h-[4rem] min-h-[4rem] bg-gray-800 p-2;
+    }
 }
