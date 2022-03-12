@@ -1,5 +1,5 @@
-import React from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import React, { useState } from 'react';
+import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import TicketStatus from '../../../../../../common/constants/TicketStatus';
 import withTickets, { WithTicketsProps } from '../../../../hoc/withTickets';
 import TicketList from './TicketList';
@@ -11,9 +11,31 @@ const TicketContainer = ({
     reorderTickets,
     moveTicket,
 }: WithTicketsProps) => {
+    const [isOpenDropDisabled, setIsOpenDropDisabled] = useState(false);
+    const [isInProgressDropDisabled, setIsInProgressDropDisabled] =
+        useState(false);
+    const [isCompletedDropDisabled, setIsCompletedDropDisabled] =
+        useState(false);
+
+    const handleDragStart = (initial: DragStart) => {
+        const { source } = initial;
+        const sourceStatus = source.droppableId;
+
+        switch (sourceStatus) {
+            case TicketStatus.Completed:
+                setIsInProgressDropDisabled(true);
+                break;
+
+            default:
+        }
+    };
+
     const handleDragEnd = (result: DropResult) => {
-        console.log(result);
         const { source, destination } = result;
+
+        setIsOpenDropDisabled(false);
+        setIsInProgressDropDisabled(false);
+        setIsCompletedDropDisabled(false);
 
         if (!destination) {
             return;
@@ -37,22 +59,28 @@ const TicketContainer = ({
 
     return (
         <div className="flex justify-start sm:justify-center px-4">
-            <DragDropContext onDragEnd={handleDragEnd}>
+            <DragDropContext
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+            >
                 <TicketList
                     tickets={openTickets}
                     status={TicketStatus.Open}
+                    isDropDisabled={isOpenDropDisabled}
                     title="OPEN"
                 />
 
                 <TicketList
                     tickets={inProgressTickets}
                     status={TicketStatus.InProgress}
+                    isDropDisabled={isInProgressDropDisabled}
                     title="IN PROGRESS"
                 />
 
                 <TicketList
                     tickets={completedTickets}
                     status={TicketStatus.Completed}
+                    isDropDisabled={isCompletedDropDisabled}
                     title="COMPLETED"
                 />
             </DragDropContext>

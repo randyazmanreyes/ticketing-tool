@@ -20,6 +20,7 @@ const Ticket = ({ id, index, title }: Props): JSX.Element => {
                     ref={provided.innerRef}
                     className={classNames('ticket', {
                         'bg-teal-200': snapshot.isDragging,
+                        'border-teal-400': snapshot.isDragging,
                     })}
                     // eslint-disable-next-line react/jsx-props-no-spreading
                     {...provided.draggableProps}

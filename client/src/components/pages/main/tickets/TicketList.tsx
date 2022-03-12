@@ -9,16 +9,18 @@ import orderSort from '../../../../../../common/utils/order-sort';
 interface Props {
     status: TicketStatus;
     tickets: TicketData[];
+    isDropDisabled: boolean;
     title?: string;
 }
 
 const defaultProps = {
-    title: 'HEADER',
+    title: 'TITLE',
 };
 
 const TicketList = ({
     status,
     tickets,
+    isDropDisabled,
     title,
 }: Props & typeof defaultProps): JSX.Element => {
     const renderTickets = tickets
@@ -36,12 +38,14 @@ const TicketList = ({
         <div className="ticket-list flex flex-col">
             <div className="font-bold mb-2">{title}</div>
 
-            <Droppable droppableId={status}>
+            <Droppable droppableId={status} isDropDisabled={isDropDisabled}>
                 {(provided, snapshot) => (
                     <div
                         ref={provided.innerRef}
-                        className={classNames('grow', {
-                            'bg-teal-400': snapshot.isDraggingOver,
+                        className={classNames('grow rounded-md', {
+                            'bg-teal-400':
+                                !isDropDisabled && snapshot.isDraggingOver,
+                            'bg-rose-400': isDropDisabled,
                         })}
                         // eslint-disable-next-line react/jsx-props-no-spreading
                         {...provided.droppableProps}
