@@ -99,8 +99,10 @@ app.get('/tickets', async (_req: Request, res: Response) => {
 });
 
 app.use(express.static(path.join(__dirname, '../../dist')));
+// need this for /ticket/:ticketId path to find the static files
+app.use('/ticket', express.static(path.join(__dirname, '../../dist')));
 
-app.use('/', (_req: Request, res: Response) => {
+app.get('*', (_req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../../dist/index.html'));
 });
 
