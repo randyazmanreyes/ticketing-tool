@@ -1,12 +1,19 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TicketStatus from '../../../../../common/constants/TicketStatus';
-import withTickets, { WithTicketsProps } from '../../../hoc/withTickets';
+import { useTickets } from '../../../hoc/withTickets';
 import Card from '../../common/Card';
 import CircularLoader from '../../common/CircularLoader';
 import RadioButtonGroup, {
     RadioButtonData,
 } from '../../common/RadioButtonGroup';
+
+/**
+ * NOTE!!!
+ * THIS COMPONENT IS NOT USING THE TICKETS HOC
+ * INSTEAD IT USES CUSTOM HOOKS TO ACCESS THE
+ * CONTEXT API
+ */
 
 type TicketParams = {
     ticketId: string;
@@ -30,10 +37,8 @@ const RADIO_BUTTON_GROUP_DATA: RadioButtonData[] = [
     },
 ];
 
-const TicketDetails = ({
-    fetchTicketById,
-    updateTicketbyId,
-}: WithTicketsProps): JSX.Element => {
+const TicketDetails = (): JSX.Element => {
+    const { fetchTicketById, updateTicketbyId } = useTickets();
     const { ticketId } = useParams<TicketParams>();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
@@ -208,4 +213,4 @@ const TicketDetails = ({
     );
 };
 
-export default withTickets(TicketDetails);
+export default TicketDetails;

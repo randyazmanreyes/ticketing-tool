@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import TicketStatus from '../../../../../../common/constants/TicketStatus';
-import withTickets, { WithTicketsProps } from '../../../../hoc/withTickets';
+import withTickets, { TicketsContextData } from '../../../../hoc/withTickets';
 import TicketList from './TicketList';
 
 const TicketContainer = ({
@@ -12,7 +12,7 @@ const TicketContainer = ({
     fetchTickets,
     reorderTickets,
     moveTicket,
-}: WithTicketsProps): JSX.Element => {
+}: TicketsContextData): JSX.Element => {
     const [isOpenDropDisabled, setIsOpenDropDisabled] = useState(false);
     const [isInProgressDropDisabled, setIsInProgressDropDisabled] =
         useState(false);

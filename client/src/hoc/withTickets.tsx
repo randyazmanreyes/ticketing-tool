@@ -1,5 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
-import React, { ComponentType, createContext, useState } from 'react';
+import React, {
+    ComponentType,
+    createContext,
+    useContext,
+    useState,
+} from 'react';
 import TicketStatus from '../../../common/constants/TicketStatus';
 import Ticket from '../../../common/data/ticket';
 import CreateTicketBody from '../../../common/request/create-ticket-body';
@@ -15,7 +20,7 @@ interface Props {
     children: React.ReactNode;
 }
 
-export interface WithTicketsProps {
+export interface TicketsContextData {
     tickets: Ticket[];
     openTickets: Ticket[];
     inProgressTickets: Ticket[];
@@ -43,14 +48,14 @@ export interface WithTicketsProps {
     ): void;
 }
 
-const TicketsContext = createContext<WithTicketsProps | null>(null);
+const TicketsContext = createContext<TicketsContextData>(
+    {} as TicketsContextData
+);
 
-/**
- * TODO:
- * MAKE THIS USE CUSTOM HOOKS
- * SHOW ANOTHER WAY OF USING CONTEXT API
- * DIFFERENT FROM HOW SESSION IS HANDLED
- */
+export const useTickets = () => {
+    return useContext(TicketsContext);
+};
+
 export const TicketsProvider = ({ children }: Props): JSX.Element => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [openTickets, setOpenTickets] = useState<Ticket[]>([]);
@@ -251,9 +256,9 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
 };
 
 export default function withTickets<
-    P extends WithTicketsProps = WithTicketsProps
+    P extends TicketsContextData = TicketsContextData
 >(WrappedComponent: ComponentType<P>) {
-    const ComponentWithTickets = (props: Omit<P, keyof WithTicketsProps>) => {
+    const ComponentWithTickets = (props: Omit<P, keyof TicketsContextData>) => {
         return (
             <TicketsContext.Consumer>
                 {(context) => (

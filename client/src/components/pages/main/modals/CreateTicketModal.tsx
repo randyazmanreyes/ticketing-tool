@@ -1,10 +1,17 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import classNames from 'classnames';
 import Card from '../../../common/Card';
-import withTickets, { WithTicketsProps } from '../../../../hoc/withTickets';
+import { useTickets } from '../../../../hoc/withTickets';
 import CircularLoader from '../../../common/CircularLoader';
 
-interface Props extends WithTicketsProps {
+/**
+ * NOTE!!!
+ * THIS COMPONENT IS NOT USING THE TICKETS HOC
+ * INSTEAD IT USES CUSTOM HOOKS TO ACCESS THE
+ * CONTEXT API
+ */
+
+interface Props {
     show?: boolean;
     onClose?(): void;
 }
@@ -14,12 +21,9 @@ const defaultProps = {
     onClose: undefined,
 };
 
-const CreateTicketModal = ({
-    show,
-    onClose,
-    createTicket,
-    fetchTickets,
-}: Props): JSX.Element => {
+const CreateTicketModal = ({ show, onClose }: Props): JSX.Element => {
+    console.log('CreateTicketModal is using custom hooks');
+    const { createTicket, fetchTickets } = useTickets();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [isCreating, setIsCreating] = useState(false);
@@ -135,4 +139,4 @@ const CreateTicketModal = ({
 
 CreateTicketModal.defaultProps = defaultProps;
 
-export default withTickets(CreateTicketModal);
+export default CreateTicketModal;
