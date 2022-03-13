@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../../common/Card';
 import withSession, { WithSessionProps } from '../../../hoc/withSession';
+import CircularLoader from '../../common/CircularLoader';
 
 const Login = ({
     session,
@@ -41,6 +42,10 @@ const Login = ({
         return label;
     };
 
+    const loginDisabled = () => {
+        return isLoggingIn || !!session.user;
+    };
+
     useEffect(() => {
         if (session.user) {
             navigate('/');
@@ -58,7 +63,7 @@ const Login = ({
 
                         <input
                             value={email}
-                            disabled={isLoggingIn}
+                            disabled={loginDisabled()}
                             required
                             placeholder="ENTER EMAIL"
                             className="form-input mt-8"
@@ -67,7 +72,7 @@ const Login = ({
 
                         <input
                             value={password}
-                            disabled={isLoggingIn}
+                            disabled={loginDisabled()}
                             required
                             type="password"
                             placeholder="PASSWORD"
@@ -76,10 +81,13 @@ const Login = ({
                         />
 
                         <button
-                            disabled={isLoggingIn}
+                            disabled={loginDisabled()}
                             type="submit"
                             className="btn-primary w-full mt-8"
                         >
+                            {isLoggingIn && (
+                                <CircularLoader className="border-lime-400" />
+                            )}
                             {getSubmitButtonLabel()}
                         </button>
 

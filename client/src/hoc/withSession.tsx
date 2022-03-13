@@ -46,8 +46,6 @@ export const SessionProvider = ({ children }: Props): JSX.Element => {
             setSession({ user: data.email });
             setUser(data.email);
         } catch (error: any) {
-            setIsLoggingIn(false);
-
             if (
                 error.response &&
                 error.response.status &&
@@ -60,6 +58,8 @@ export const SessionProvider = ({ children }: Props): JSX.Element => {
                 });
             }
         }
+
+        setIsLoggingIn(false);
     };
 
     const logout = () => {
