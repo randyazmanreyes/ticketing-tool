@@ -1,46 +1,42 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import withSession, { WithSessionProps } from '../../../hoc/withSession';
 import { TicketsProvider } from '../../../hoc/withTickets';
+import PrivateRoute from '../PrivateRoute';
 import TicketDetails from './TicketDetails';
 
-const Details = ({ session, logout }: WithSessionProps): JSX.Element | null => {
-    const navigate = useNavigate();
+/**
+ * NOTE!!!
+ * YOU CAN ALSO WRAP THE PAGE COMPONENT HERE
+ * WITH THE PRIVATE ROUTE COMPONENT
+ */
 
+const Details = ({ logout }: WithSessionProps): JSX.Element | null => {
     const handleLogout = () => {
         logout();
     };
 
-    useEffect(() => {
-        if (!session.user) {
-            navigate('/login');
-        }
-    }, [session]);
-
-    if (!session.user) {
-        return null;
-    }
-
     return (
-        <TicketsProvider>
-            <div className="p-4 pt-[4rem]">
-                <div className="top-bar">
-                    <div className="grow" />
+        <PrivateRoute>
+            <TicketsProvider>
+                <div className="p-4 pt-[4rem]">
+                    <div className="top-bar">
+                        <div className="grow" />
 
-                    <button
-                        type="button"
-                        className="btn-primary"
-                        onClick={handleLogout}
-                    >
-                        LOG OUT
-                    </button>
-                </div>
+                        <button
+                            type="button"
+                            className="btn-primary"
+                            onClick={handleLogout}
+                        >
+                            LOG OUT
+                        </button>
+                    </div>
 
-                <div className="flex justify-center pt-4">
-                    <TicketDetails />
+                    <div className="flex justify-center pt-4">
+                        <TicketDetails />
+                    </div>
                 </div>
-            </div>
-        </TicketsProvider>
+            </TicketsProvider>
+        </PrivateRoute>
     );
 };
 

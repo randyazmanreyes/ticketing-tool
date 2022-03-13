@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import withSession, { WithSessionProps } from '../../../hoc/withSession';
 import { TicketsProvider } from '../../../hoc/withTickets';
 import CreateTicketModal from './modals/CreateTicketModal';
 import TicketContainer from './tickets/TicketContainer';
 
-const Main = ({ session, logout }: WithSessionProps): JSX.Element | null => {
-    const navigate = useNavigate();
+const Main = ({ logout }: WithSessionProps): JSX.Element | null => {
     const [isShowCreateModal, setIsShowCreateModal] = useState(false);
 
     const handleLogout = () => {
@@ -20,16 +18,6 @@ const Main = ({ session, logout }: WithSessionProps): JSX.Element | null => {
     const handleCloseModal = () => {
         setIsShowCreateModal(false);
     };
-
-    useEffect(() => {
-        if (!session.user) {
-            navigate('/login');
-        }
-    }, [session]);
-
-    if (!session.user) {
-        return null;
-    }
 
     return (
         <TicketsProvider>

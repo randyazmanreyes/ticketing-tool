@@ -22,7 +22,6 @@ const defaultProps = {
 };
 
 const CreateTicketModal = ({ show, onClose }: Props): JSX.Element => {
-    console.log('CreateTicketModal is using custom hooks');
     const { createTicket, fetchTickets } = useTickets();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
