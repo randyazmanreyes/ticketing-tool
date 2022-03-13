@@ -39,7 +39,7 @@ const TicketDetails = ({
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState<TicketStatus | undefined>();
     const [initialTitle, setInitialTitle] = useState('');
-    const [initialDescription, stInitialDescription] = useState('');
+    const [initialDescription, setInitialDescription] = useState('');
     const [initialStatus, setInitialStatus] = useState<
         TicketStatus | undefined
     >();
@@ -63,7 +63,7 @@ const TicketDetails = ({
                     }
 
                     if (!initialDescription) {
-                        stInitialDescription(ticket.description);
+                        setInitialDescription(ticket.description);
                     }
 
                     if (!initialStatus) {
@@ -137,6 +137,9 @@ const TicketDetails = ({
 
             await updateTicketbyId(+ticketId, title, description, status);
 
+            setInitialTitle(title);
+            setInitialDescription(description);
+            setInitialStatus(status);
             setIsSaving(false);
         } catch (error) {
             console.log(error);
