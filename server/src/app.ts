@@ -13,6 +13,7 @@ import ErrorResponse from '../../common/request/error-response';
 import MoveTicketBody from '../../common/request/move-ticket-body';
 import CreateTicketResponse from '../../common/request/create-ticket-response';
 import CreateTicketBody from '../../common/request/create-ticket-body';
+import GetTicketsResponse from '../../common/request/get-tickets-response';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = Debug('ticketing-tool:app');
@@ -92,11 +93,27 @@ app.post(
     }
 );
 
-app.get('/tickets', async (_req: Request, res: Response) => {
-    await delay(2000);
+app.get(
+    '/tickets/:ticketId',
+    async (req: Request<{ ticketId: string }>, res: Response) => {
+        const { ticketId } = req.params;
 
-    res.status(200).send({ tickets: ticketService.tickets });
-});
+        await delay(1000);
+
+        const ticket = ticketService.getById(+ticketId);
+
+        res.status(200).send({ ticket });
+    }
+);
+
+app.get(
+    '/tickets',
+    async (_req: Request, res: Response<GetTicketsResponse>) => {
+        await delay(1500);
+
+        res.status(200).send({ tickets: ticketService.tickets });
+    }
+);
 
 app.use(express.static(path.join(__dirname, '../../dist')));
 // need this for /ticket/:ticketId path to find the static files

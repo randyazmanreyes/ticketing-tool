@@ -109,7 +109,7 @@ const CreateTicketModal = ({
 
                     <textarea
                         required
-                        rows={6}
+                        rows={4}
                         value={description}
                         disabled={isCreating}
                         placeholder="ENTER DESCRIPTION"
@@ -120,7 +120,7 @@ const CreateTicketModal = ({
                     <button
                         type="submit"
                         disabled={isCreating}
-                        className="btn-primary w-full mt-8"
+                        className="btn-primary w-full mt-6"
                     >
                         {isCreating && (
                             <CircularLoader className="border-lime-400" />

@@ -1,4 +1,4 @@
-import TicketStatus from './constants/TicketStatus';
+import TicketStatus from '../constants/TicketStatus';
 
 export default interface MoveTicketBody {
     sourceStatus: TicketStatus;

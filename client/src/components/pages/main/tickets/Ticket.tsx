@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Draggable } from 'react-beautiful-dnd';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     id: number;
@@ -9,8 +10,10 @@ interface Props {
 }
 
 const Ticket = ({ id, index, title }: Props): JSX.Element => {
+    const navigate = useNavigate();
+
     const handleClick = () => {
-        console.log('view ticket');
+        navigate(`/ticket/${id}`);
     };
 
     return (

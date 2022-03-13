@@ -87,6 +87,12 @@ class TicketService {
             aTicket.order = index;
         });
     }
+
+    public getById(id: number) {
+        const ticket = this.tickets.find((pTicket) => pTicket.id === id);
+
+        return ticket;
+    }
 }
 
 const ticketService = new TicketService();

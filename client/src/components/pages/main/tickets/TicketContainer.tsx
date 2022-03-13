@@ -12,7 +12,7 @@ const TicketContainer = ({
     fetchTickets,
     reorderTickets,
     moveTicket,
-}: WithTicketsProps) => {
+}: WithTicketsProps): JSX.Element => {
     const [isOpenDropDisabled, setIsOpenDropDisabled] = useState(false);
     const [isInProgressDropDisabled, setIsInProgressDropDisabled] =
         useState(false);

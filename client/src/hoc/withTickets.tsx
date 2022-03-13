@@ -4,6 +4,7 @@ import TicketStatus from '../../../common/constants/TicketStatus';
 import Ticket from '../../../common/data/ticket';
 import CreateTicketBody from '../../../common/request/create-ticket-body';
 import CreateTicketResponse from '../../../common/request/create-ticket-response';
+import GetTicketByIdResponse from '../../../common/request/get-ticketbyid-response';
 import GetTicketsResponse from '../../../common/request/get-tickets-response';
 import MoveTicketBody from '../../../common/request/move-ticket-body';
 import ReorderTicketsBody from '../../../common/request/reorder-tickets-body';
@@ -20,6 +21,7 @@ export interface WithTicketsProps {
     completedTickets: Ticket[];
     isFetchingTickets: boolean;
     fetchTickets(): Promise<void>;
+    fetchTicketById(id: number): Promise<Ticket>;
     createTicket(title: string, description: string): Promise<void>;
     reorderTickets(
         status: TicketStatus,
@@ -72,6 +74,14 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
         );
 
         setIsFetchingTickets(false);
+    };
+
+    const fetchTicketById = async (ticketId: number) => {
+        const {
+            data: { ticket },
+        } = await axios.get<GetTicketByIdResponse>(`/tickets/${ticketId}`);
+
+        return ticket;
     };
 
     const getTicketsByStatus = (status: TicketStatus) => {
@@ -204,6 +214,7 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
         completedTickets,
         isFetchingTickets,
         fetchTickets,
+        fetchTicketById,
         createTicket,
         reorderTickets,
         moveTicket,
