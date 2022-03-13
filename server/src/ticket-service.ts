@@ -24,6 +24,7 @@ class TicketService {
             description,
             status: TicketStatus.Open,
             order: 0, // temporarily set this to zero
+            createdAt: new Date().toISOString(),
         };
 
         const openTickets = this.tickets.filter(

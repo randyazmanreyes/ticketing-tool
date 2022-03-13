@@ -6,4 +6,5 @@ export default interface Ticket {
     description: string;
     status: TicketStatus;
     order: number;
+    createdAt: string;
 }

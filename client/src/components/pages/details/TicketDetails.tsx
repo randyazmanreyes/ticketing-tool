@@ -48,6 +48,7 @@ const TicketDetails = (): JSX.Element => {
     const [initialStatus, setInitialStatus] = useState<
         TicketStatus | undefined
     >();
+    const [createdAt, setCreatedAt] = useState('');
     const [isFetching, setIsFetching] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -62,6 +63,7 @@ const TicketDetails = (): JSX.Element => {
                     setTitle(ticket.title);
                     setDescription(ticket.description);
                     setStatus(ticket.status);
+                    setCreatedAt(ticket.createdAt);
 
                     if (!initialTitle) {
                         setInitialTitle(ticket.title);
@@ -102,6 +104,14 @@ const TicketDetails = (): JSX.Element => {
         );
 
         return data;
+    };
+
+    const getCreatedDateString = () => {
+        const date = new Date(createdAt);
+
+        return createdAt !== ''
+            ? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+            : '';
     };
 
     const saveDisabled = () => {
@@ -168,7 +178,9 @@ const TicketDetails = (): JSX.Element => {
                     TICKET DETAILS
                 </div>
 
-                <div className="text-sm font-bold mt-8">TITLE</div>
+                <div className="text-xs font-bold mt-6">{`Created: ${getCreatedDateString()}`}</div>
+
+                <div className="text-sm font-bold mt-4">TITLE</div>
 
                 <input
                     required
