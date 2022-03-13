@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start-server": "",
     "dev-server": "set DEBUG=ticketing-tool:* & ts-node-dev ./server/src/index.ts",
-    "build-server": "",
     "watch-client": "webpack --watch --config webpack.dev.js",
+    "start": "set DEBUG=ticketing-tool:* & set NODE_ENV=production & node ./build/server/src/index.js",
+    "build-server": "tsc --project tsconfig.prod.json",
     "build-client": "webpack --config webpack.prod.js",
     "test": "jest --watchAll --no-cache"
   },

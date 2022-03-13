@@ -5,3 +5,5 @@ dist/*
 
 # but keep the folder
 !dist/.keep
+
+build/*
