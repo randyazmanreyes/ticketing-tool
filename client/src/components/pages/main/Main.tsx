@@ -33,7 +33,7 @@ const Main = ({ session, logout }: WithSessionProps): JSX.Element | null => {
 
     return (
         <TicketsProvider>
-            <div className="inline-block sm:block p-4 pt-[4rem]">
+            <div className="pt-[4rem]">
                 <div className="top-bar">
                     <button
                         type="button"

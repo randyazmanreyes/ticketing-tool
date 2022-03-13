@@ -64,35 +64,40 @@ const TicketContainer = ({
     }, []);
 
     return (
-        <div className="flex justify-start sm:justify-center px-4">
-            <DragDropContext
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-            >
-                <TicketList
-                    tickets={openTickets}
-                    status={TicketStatus.Open}
-                    isDropDisabled={isOpenDropDisabled}
-                    isLoading={isFetchingTickets}
-                    title="OPEN"
-                />
+        <div className="relative w-screen sm:w-auto overflow-x-auto">
+            <div className="flex justify-start md:justify-center">
+                <DragDropContext
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                >
+                    <TicketList
+                        tickets={openTickets}
+                        status={TicketStatus.Open}
+                        isDropDisabled={isOpenDropDisabled}
+                        isLoading={isFetchingTickets}
+                        title="OPEN"
+                    />
 
-                <TicketList
-                    tickets={inProgressTickets}
-                    status={TicketStatus.InProgress}
-                    isDropDisabled={isInProgressDropDisabled}
-                    isLoading={isFetchingTickets}
-                    title="IN PROGRESS"
-                />
+                    <TicketList
+                        tickets={inProgressTickets}
+                        status={TicketStatus.InProgress}
+                        isDropDisabled={isInProgressDropDisabled}
+                        isLoading={isFetchingTickets}
+                        title="IN PROGRESS"
+                    />
 
-                <TicketList
-                    tickets={completedTickets}
-                    status={TicketStatus.Completed}
-                    isDropDisabled={isCompletedDropDisabled}
-                    isLoading={isFetchingTickets}
-                    title="COMPLETED"
-                />
-            </DragDropContext>
+                    <TicketList
+                        tickets={completedTickets}
+                        status={TicketStatus.Completed}
+                        isDropDisabled={isCompletedDropDisabled}
+                        isLoading={isFetchingTickets}
+                        title="COMPLETED"
+                    />
+                </DragDropContext>
+
+                {/* NOTE!!! DO NOT DELETE THIS, IT SERVES AS RIGHT PADDING IN MOBILE */}
+                <div className="md:hidden opacity-0">.</div>
+            </div>
         </div>
     );
 };

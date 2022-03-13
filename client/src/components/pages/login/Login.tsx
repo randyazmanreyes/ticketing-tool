@@ -53,7 +53,7 @@ const Login = ({
     }, [session]);
 
     return (
-        <div className="flex justify-center items-center h-screen w-screen">
+        <div className="flex justify-center items-center h-screen w-screen pb-4 sm:pb-0">
             <Card>
                 <form onSubmit={handleFormSubmit}>
                     <div className="w-full h-full sm:p-2">
