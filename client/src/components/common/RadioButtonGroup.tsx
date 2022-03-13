@@ -5,6 +5,7 @@ import RadioButton from './RadioButton';
 export interface RadioButtonData {
     value: string;
     label: string;
+    isDisabled: boolean;
 }
 
 interface Props {
@@ -65,10 +66,10 @@ const RadioButtonGroup = ({
             value={pData.value}
             label={pData.label}
             isChecked={isRadioButtonChecked(pData)}
-            isDisabled={isDisabled}
+            isDisabled={isDisabled || pData.isDisabled}
             className={classNames('mt-1', radioButtonClassName)}
-            labelClassName={classNames('mt-1', radioButtonLabelClassName)}
-            inputClassName={classNames('mt-1', radioButtonInputClassName)}
+            labelClassName={classNames(radioButtonLabelClassName)}
+            inputClassName={classNames(radioButtonInputClassName)}
             onChange={handleChange}
         />
     ));

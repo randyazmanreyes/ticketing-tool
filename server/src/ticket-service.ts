@@ -93,6 +93,21 @@ class TicketService {
 
         return ticket;
     }
+
+    public updateById(
+        id: number,
+        title: string,
+        description: string,
+        status: TicketStatus
+    ) {
+        const ticket = this.tickets.find((pTicket) => pTicket.id === id);
+
+        if (ticket) {
+            ticket.title = title;
+            ticket.description = description;
+            ticket.status = status;
+        }
+    }
 }
 
 const ticketService = new TicketService();

@@ -14,6 +14,8 @@ import MoveTicketBody from '../../common/request/move-ticket-body';
 import CreateTicketResponse from '../../common/request/create-ticket-response';
 import CreateTicketBody from '../../common/request/create-ticket-body';
 import GetTicketsResponse from '../../common/request/get-tickets-response';
+import TicketIdParams from '../../common/request/ticketid-params';
+import UpdateTicketBody from '../../common/request/update-ticket-body';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = Debug('ticketing-tool:app');
@@ -95,7 +97,7 @@ app.post(
 
 app.get(
     '/tickets/:ticketId',
-    async (req: Request<{ ticketId: string }>, res: Response) => {
+    async (req: Request<TicketIdParams>, res: Response) => {
         const { ticketId } = req.params;
 
         await delay(1000);
@@ -103,6 +105,23 @@ app.get(
         const ticket = ticketService.getById(+ticketId);
 
         res.status(200).send({ ticket });
+    }
+);
+
+app.patch(
+    '/tickets/:ticketId',
+    async (
+        req: Request<TicketIdParams, any, UpdateTicketBody>,
+        res: Response<SuccessResponse>
+    ) => {
+        const { ticketId } = req.params;
+        const { title, description, status } = req.body;
+
+        await delay(1000);
+
+        ticketService.updateById(+ticketId, title, description, status);
+
+        res.status(200).send({ success: true });
     }
 );
 

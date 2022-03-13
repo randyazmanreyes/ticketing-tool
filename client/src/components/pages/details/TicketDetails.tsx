@@ -12,26 +12,37 @@ type TicketParams = {
     ticketId: string;
 };
 
-const radioButtonGroupData: RadioButtonData[] = [
+const RADIO_BUTTON_GROUP_DATA: RadioButtonData[] = [
     {
         value: TicketStatus.Open,
         label: 'OPEN',
+        isDisabled: false,
     },
     {
         value: TicketStatus.InProgress,
         label: 'IN PROGRESS',
+        isDisabled: false,
     },
     {
         value: TicketStatus.Completed,
         label: 'COMPLETED',
+        isDisabled: false,
     },
 ];
 
-const TicketDetails = ({ fetchTicketById }: WithTicketsProps): JSX.Element => {
+const TicketDetails = ({
+    fetchTicketById,
+    updateTicketbyId,
+}: WithTicketsProps): JSX.Element => {
     const { ticketId } = useParams<TicketParams>();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState<TicketStatus | undefined>();
+    const [initialTitle, setInitialTitle] = useState('');
+    const [initialDescription, stInitialDescription] = useState('');
+    const [initialStatus, setInitialStatus] = useState<
+        TicketStatus | undefined
+    >();
     const [isFetching, setIsFetching] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -46,6 +57,18 @@ const TicketDetails = ({ fetchTicketById }: WithTicketsProps): JSX.Element => {
                     setTitle(ticket.title);
                     setDescription(ticket.description);
                     setStatus(ticket.status);
+
+                    if (!initialTitle) {
+                        setInitialTitle(ticket.title);
+                    }
+
+                    if (!initialDescription) {
+                        stInitialDescription(ticket.description);
+                    }
+
+                    if (!initialStatus) {
+                        setInitialStatus(ticket.status);
+                    }
                 }
             }
         } catch (error) {
@@ -55,12 +78,35 @@ const TicketDetails = ({ fetchTicketById }: WithTicketsProps): JSX.Element => {
         setIsFetching(false);
     };
 
+    const getRadioGroupData = () => {
+        switch (initialStatus) {
+            case TicketStatus.Completed:
+                return RADIO_BUTTON_GROUP_DATA.map((pData) => ({
+                    ...pData,
+                    isDisabled: pData.value === TicketStatus.InProgress,
+                }));
+
+            default:
+                return RADIO_BUTTON_GROUP_DATA;
+        }
+    };
+
     const getRadioSelectedData = () => {
-        const data = radioButtonGroupData.find(
+        const data = RADIO_BUTTON_GROUP_DATA.find(
             (pData) => pData.value === status
         );
 
         return data;
+    };
+
+    const saveDisabled = () => {
+        return (
+            isSaving ||
+            isFetching ||
+            (title === initialTitle &&
+                description === initialDescription &&
+                status === initialStatus)
+        );
     };
 
     const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -78,7 +124,23 @@ const TicketDetails = ({ fetchTicketById }: WithTicketsProps): JSX.Element => {
     };
 
     const handleRadioButtonGroupChange = (data: RadioButtonData) => {
-        console.log(data);
+        setStatus(data.value as TicketStatus);
+    };
+
+    const handleSaveClick = async () => {
+        if (!ticketId || !status) {
+            return;
+        }
+
+        try {
+            setIsSaving(true);
+
+            await updateTicketbyId(+ticketId, title, description, status);
+
+            setIsSaving(false);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {
@@ -117,7 +179,7 @@ const TicketDetails = ({ fetchTicketById }: WithTicketsProps): JSX.Element => {
 
                 <RadioButtonGroup
                     name="ticketStatus"
-                    data={radioButtonGroupData}
+                    data={getRadioGroupData()}
                     selectedData={getRadioSelectedData()}
                     isDisabled={isFetching || isSaving}
                     onChange={handleRadioButtonGroupChange}
@@ -125,8 +187,9 @@ const TicketDetails = ({ fetchTicketById }: WithTicketsProps): JSX.Element => {
 
                 <button
                     type="submit"
-                    disabled={isFetching || isSaving}
+                    disabled={saveDisabled()}
                     className="btn-primary w-full mt-6"
+                    onClick={handleSaveClick}
                 >
                     {isSaving && <CircularLoader className="border-lime-400" />}
                     SAVE

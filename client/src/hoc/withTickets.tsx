@@ -9,6 +9,7 @@ import GetTicketsResponse from '../../../common/request/get-tickets-response';
 import MoveTicketBody from '../../../common/request/move-ticket-body';
 import ReorderTicketsBody from '../../../common/request/reorder-tickets-body';
 import SuccessResponse from '../../../common/request/success-response';
+import UpdateTicketBody from '../../../common/request/update-ticket-body';
 
 interface Props {
     children: React.ReactNode;
@@ -20,9 +21,15 @@ export interface WithTicketsProps {
     inProgressTickets: Ticket[];
     completedTickets: Ticket[];
     isFetchingTickets: boolean;
+    createTicket(title: string, description: string): Promise<void>;
     fetchTickets(): Promise<void>;
     fetchTicketById(id: number): Promise<Ticket>;
-    createTicket(title: string, description: string): Promise<void>;
+    updateTicketbyId(
+        id: number,
+        title: string,
+        description: string,
+        status: TicketStatus
+    ): Promise<void>;
     reorderTickets(
         status: TicketStatus,
         startIndex: number,
@@ -76,10 +83,10 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
         setIsFetchingTickets(false);
     };
 
-    const fetchTicketById = async (ticketId: number) => {
+    const fetchTicketById = async (id: number) => {
         const {
             data: { ticket },
-        } = await axios.get<GetTicketByIdResponse>(`/tickets/${ticketId}`);
+        } = await axios.get<GetTicketByIdResponse>(`/tickets/${id}`);
 
         return ticket;
     };
@@ -128,6 +135,21 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
         });
 
         console.log(`ticket ${ticket.id} created`);
+    };
+
+    const updateTicketbyId = async (
+        id: number,
+        title: string,
+        description: string,
+        status: TicketStatus
+    ) => {
+        const { data } = await axios.patch<
+            SuccessResponse,
+            AxiosResponse<SuccessResponse, UpdateTicketBody>,
+            UpdateTicketBody
+        >(`/tickets/${id}`, { title, description, status });
+
+        console.log('ticket updated:', data.success);
     };
 
     const reorderTickets = async (
@@ -213,9 +235,10 @@ export const TicketsProvider = ({ children }: Props): JSX.Element => {
         inProgressTickets,
         completedTickets,
         isFetchingTickets,
+        createTicket,
         fetchTickets,
         fetchTicketById,
-        createTicket,
+        updateTicketbyId,
         reorderTickets,
         moveTicket,
     };

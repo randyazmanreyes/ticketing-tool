@@ -33,11 +33,12 @@ const RadioButton = ({
     inputClassName,
     onChange,
 }: Props): JSX.Element => {
-    const htmlFor = `${name}-${value}`;
+    const inputId = `${name}-${value}`;
 
     return (
         <div className={classNames('flex items-center h-6', className)}>
             <input
+                id={inputId}
                 type="radio"
                 name={name}
                 value={value}
@@ -47,14 +48,18 @@ const RadioButton = ({
                     'w-4 h-4 focus:ring-2 accent-teal-800 hover:accent-teal-600 focus:ring-transparent disabled:opacity-60 mr-1',
                     inputClassName
                 )}
-                aria-labelledby={htmlFor}
-                aria-describedby={htmlFor}
+                aria-labelledby={inputId}
+                aria-describedby={inputId}
                 onChange={onChange}
             />
 
             <label
-                htmlFor={htmlFor}
-                className={classNames('h-6 pt-[1px]', labelClassName)}
+                htmlFor={inputId}
+                className={classNames(
+                    'h-6 pt-[1px]',
+                    { 'opacity-60': isDisabled },
+                    labelClassName
+                )}
             >
                 {label}
             </label>
