@@ -148,7 +148,13 @@ const TicketDetails = ({
     }, []);
 
     return (
-        <Card>
+        <Card className="relative">
+            {isFetching && (
+                <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full z-50">
+                    <CircularLoader className="w-8 h-8" />
+                </div>
+            )}
+
             <form onSubmit={handleFormSubmit}>
                 <div className="text-xl text-center font-bold">
                     TICKET DETAILS
