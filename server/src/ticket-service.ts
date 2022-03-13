@@ -1,6 +1,7 @@
 import TicketStatus from '../../common/constants/TicketStatus';
 import Ticket from '../../common/data/ticket';
 import orderSort from '../../common/utils/order-sort';
+import updateOrder from '../../common/utils/update-order';
 
 let ticketIdIncrement = 0;
 
@@ -27,11 +28,9 @@ class TicketService {
             createdAt: new Date().toISOString(),
         };
 
-        const openTickets = this.tickets.filter(
-            (pTicket) => pTicket.status === TicketStatus.Open
-        );
-
-        openTickets.sort((a, b) => a.order - b.order);
+        const openTickets = this.tickets
+            .filter((pTicket) => pTicket.status === TicketStatus.Open)
+            .sort(orderSort);
 
         const lastOpenTicket = openTickets[openTickets.length - 1];
         ticket.order = lastOpenTicket ? lastOpenTicket.order + 1 : 0;
@@ -51,12 +50,7 @@ class TicketService {
             const [removedTicket] = tickets.splice(startIndex, 1);
 
             tickets.splice(endIndex, 0, removedTicket);
-
-            tickets.forEach((pTicket, index) => {
-                // fix for no-param-reassign error
-                const aTicket = pTicket;
-                aTicket.order = index;
-            });
+            updateOrder(tickets);
         }
     }
 
@@ -77,16 +71,8 @@ class TicketService {
         removedTicket.status = destinationStatus;
 
         destinationTickets.splice(destinationIndex, 0, removedTicket);
-        sourceTickets.forEach((pTicket, index) => {
-            // fix for no-param-reassign error
-            const aTicket = pTicket;
-            aTicket.order = index;
-        });
-        destinationTickets.forEach((pTicket, index) => {
-            // fix for no-param-reassign error
-            const aTicket = pTicket;
-            aTicket.order = index;
-        });
+        updateOrder(sourceTickets);
+        updateOrder(destinationTickets);
     }
 
     public getById(id: number) {
@@ -104,9 +90,28 @@ class TicketService {
         const ticket = this.tickets.find((pTicket) => pTicket.id === id);
 
         if (ticket) {
+            const prevStatus = ticket.status;
+
             ticket.title = title;
             ticket.description = description;
             ticket.status = status;
+
+            // status has changed, reorder tickets
+            if (prevStatus !== status) {
+                // update order of previous status tickets
+                let tickets = this.mTickets
+                    .filter((pTicket) => pTicket.status === prevStatus)
+                    .sort(orderSort);
+
+                updateOrder(tickets);
+
+                // update order of the target status
+                tickets = this.mTickets
+                    .filter((pTicket) => pTicket.status === status)
+                    .sort(orderSort);
+
+                updateOrder(tickets);
+            }
         }
     }
 }
