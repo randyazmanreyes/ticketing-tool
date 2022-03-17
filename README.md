@@ -24,6 +24,8 @@ npm run watch-client
 
 ### Open this [link](http://localhost:3000) your browser
 
+### Login with user **user** and password **1234**
+
 <br />
 
 ## **Screenshots**
