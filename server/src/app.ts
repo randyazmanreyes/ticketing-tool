@@ -38,7 +38,7 @@ app.post(
 
         await delay(1000);
 
-        if (email === 'test@vroom.com.au' && password === 'frontendtest2022') {
+        if (email === 'user' && password === '1234') {
             res.status(200).send({ email });
         } else {
             res.status(401).send({
